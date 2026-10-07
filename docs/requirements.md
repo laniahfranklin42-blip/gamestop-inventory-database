@@ -72,4 +72,4 @@ The following entities will be used in this database:
 - supplier_id - Primary Key
 - supplier_name
 - contact_email
-- phon
+- phone
