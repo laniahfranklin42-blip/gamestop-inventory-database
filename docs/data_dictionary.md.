@@ -1,0 +1,99 @@
+# GameStop Inventory Database - Data Dictionary
+
+## STORE
+
+| Column | Type | Key | NULL | Description |
+|---|---|---|---|---|
+| store_id | INT | PK | No | Unique identifier of a store |
+| store_name | VARCHAR(100) | — | No | Name of a store |
+| address | VARCHAR(255) | — | No | Street address |
+| city | VARCHAR(100) | — | No | City of a store |
+| state | VARCHAR(50) | — | No | State of a store |
+| zip_code | VARCHAR(10) | — | No | ZIP code of a store |
+
+## PRODUCT
+
+| Column | Type | Key | NULL | Description |
+|---|---|---|---|---|
+| product_id | INT | PK | No | Unique identifier of a product |
+| product_name | VARCHAR(150) | — | No | Name of a product |
+| category | VARCHAR(100) | — | No | Category of a product |
+| price | DECIMAL(10,2) | — | No | Price of a product |
+| supplier_id | INT | FK | No | Supplier of a product |
+
+## INVENTORY
+
+| Column | Type | Key | NULL | Description |
+|---|---|---|---|---|
+| inventory_id | INT | PK | No | Inventory record ID |
+| store_id | INT | FK, UQ | No | Store ID of a store stocking a product |
+| product_id | INT | FK, UQ | No | ID of a listed product |
+| quantity | INT | — | No | Quantity of items in stock |
+
+## CUSTOMER
+
+| Column | Type | Key | NULL | Description |
+|---|---|---|---|---|
+| customer_id | INT | PK | No | Customer ID |
+| first_name | VARCHAR(100) | — | No | First name of a customer |
+| last_name | VARCHAR(100) | — | No | Last name of a customer |
+| email | VARCHAR(255) | UNIQUE | No | E-mail of a customer |
+| phone | VARCHAR(20) | — | Yes | Phone number of a customer |
+
+## CUSTOMER_ORDER
+
+| Column | Type | Key | NULL | Description |
+|---|---|---|---|---|
+| order_id | INT | PK | No | Order ID |
+| customer_id | INT | FK | No | Customer ID |
+| store_id | INT | FK | No | Store ID |
+| order_date | DATETIME | — | No | Date and time of placing an order |
+| total_amount | DECIMAL(10,2) | — | No | Total cost of an order |
+
+## ORDER_ITEM
+
+| Column | Type | Key | NULL | Description |
+|---|---|---|---|---|
+| order_item_id | INT | PK | No | Order item ID |
+| order_id | INT | FK | No | Order ID |
+| product_id | INT | FK | No | Product ID |
+| quantity | INT | — | No | Quantity of an item |
+| price | DECIMAL(10,2) | — | No | Price of an item |
+
+## EMPLOYEE
+
+| Column | Type | Key | NULL | Description |
+|---|---|---|---|---|
+| employee_id | INT | PK | No | Employee ID |
+| store_id | INT | FK | No | Store ID of an employee's store |
+| first_name | VARCHAR(100) | — | No | First name of an employee |
+| last_name | VARCHAR(100) | — | No | Last name of an employee |
+| position | VARCHAR(100) | — | No | Position of an employee (role) |
+
+## SUPPLIER
+
+| Column | Type | Key | NULL | Description |
+|---|---|---|---|---|
+| supplier_id | INT | PK | No | Supplier ID |
+| supplier_name | VARCHAR(100) | — | No | Supplier name |
+| contact_email | VARCHAR(255) | — | Yes | Contact e-mail of a supplier |
+| phone | VARCHAR(20) | — | Yes | Phone number of a supplier |
+
+## Keys
+
+- PK – Primary key
+- FK – Foreign key
+- UNIQUE – Unique constraint
+- UQ – Composite unique constraint (the combination of store_id and product_id in the INVENTORY table must be unique). Each column can have duplicate values individually.
+- NULL – Whether a column allows NULL values
+
+## Foreign Key Constraints
+
+- PRODUCT (supplier_id) → SUPPLIER (supplier_id)
+- INVENTORY (store_id) → STORE (store_id)
+- INVENTORY (product_id) → PRODUCT (product_id)
+- CUSTOMER_ORDER (customer_id) → CUSTOMER (customer_id)
+- CUSTOMER_ORDER (store_id) → STORE (store_id)
+- ORDER_ITEM (order_id) → CUSTOMER_ORDER (order_id)
+- ORDER_ITEM (product_id) → PRODUCT (product_id)
+- EMPLOYEE (store_id) → STORE (store_id)
